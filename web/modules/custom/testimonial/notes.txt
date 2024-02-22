@@ -1,0 +1,9 @@
+### NOTES A MOI-MEME ###
+
+Idée du module :
+
+Ajouter une page de témoignages, permettant aux utilisateurs de mettre un commentaire.
+Les commentaires seront stockés sur la base de donnée.
+
+(pas d'administration des commentaires, jsais pas comment c'est censé marcher,
+un admin est pas censé pouvoir supprimer un commentaire négatif, question d'éthique)

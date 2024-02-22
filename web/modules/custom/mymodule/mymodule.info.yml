@@ -1,0 +1,5 @@
+name: 'My First Drupal Module'
+type: module
+core_version_requirement: ^10.2
+description: 'Code to spark my module development understanding!'
+package: 'My Module Dev Course'

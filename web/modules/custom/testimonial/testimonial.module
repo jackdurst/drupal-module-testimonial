@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * @file
+ * Provides custom functionality for managing testimonials on the site.
+ *
+ * This module allows users to submit and display testimonials on the site.
+ *
+ * @author DURST JACQUES
+ * @version 1.0
+ */
+
