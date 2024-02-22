@@ -1,9 +1,13 @@
 name: 'Testimonial'
 type: module
 description: 'Allows users to submit and display testimonials.'
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^10.2
 package: Custom
 version: 1.0
 dependencies:
-  - drupal:views
+  - drupal:core
   - drupal:block
+  - drupal:views
+  - drupal:entity
+  - drupal:user
+

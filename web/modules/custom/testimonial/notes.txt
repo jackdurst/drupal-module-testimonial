@@ -4,6 +4,21 @@ Idée du module :
 
 Ajouter une page de témoignages, permettant aux utilisateurs de mettre un commentaire.
 Les commentaires seront stockés sur la base de donnée.
-
 (pas d'administration des commentaires, jsais pas comment c'est censé marcher,
 un admin est pas censé pouvoir supprimer un commentaire négatif, question d'éthique)
+
+### STEP 1 : Structures & info.yml ###
+
+Création de la structure de dossiers.
+Création du .module et du .info.yml
+
+  ### STEP 2 : Dependencies ###
+
+Identification des dependencies (si j'ai bien compris) :
+  - drupal:core // access to core functionnalities of drupal comme FormBase ou ControllerBase
+  - drupal:block // needed to create block and display mes témoignanes
+  - drupal:views // peut être utile pour filtrer etc les témoignages
+  - drupal:entity // pour stocker mes testimonials sous forme d'entities
+  - drupal:user // pour donner l'accès uniquement aux utilisateurs vérifiés
+
+  ### STEP 3 : Testimonial submission Form ###
