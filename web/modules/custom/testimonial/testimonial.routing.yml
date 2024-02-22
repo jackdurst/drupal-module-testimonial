@@ -1,0 +1,7 @@
+testimonial.submit_form:
+  path: '/testimonial/submit'
+  defaults:
+    _form: '\Drupal\testimonial\Form\TestimonialSubmitForm'
+    _title: 'Soumettre un témoignage'
+  requirements:
+    _permission: 'access content'

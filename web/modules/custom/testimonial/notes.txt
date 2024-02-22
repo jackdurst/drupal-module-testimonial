@@ -22,3 +22,24 @@ Identification des dependencies (si j'ai bien compris) :
   - drupal:user // pour donner l'accès uniquement aux utilisateurs vérifiés
 
   ### STEP 3 : Testimonial submission Form ###
+
+  note :  J'utiliserai .routing.yml et non hook_menu()
+          car d'après mes recherches c'est préférable pour les version de drupal 8+.
+
+fonctionnement : authentificated users can post a testimonial. it will be saved on the database, including the date,
+name and mail.
+
+rappel : Ma Form class doit contenir :
+ - getFormId() // retourne l'id du form, utilisé dans le system de gestion de form drupal
+ - buildForm(array $form, FormStateInterface $form_state) // défini les éléments du form, boutons, fields etc
+ - validateForm(array &$form, FormStateInterface $form_state) // FACULTATIF, contient la logique de validation
+ - submitForm(array &$form, FormStateInterface $form_state) // contient la logique de  traitement des data post validation
+
+### STEP 4 : routing ###
+
+Apparement depuis Drupal 8 on préfère utiliser un fichier monmodule.routing.yml
+On peut néanmoins retrouver le hook_menu() utilisé dans les v7 et inférieur.
+
+Création du fichier testimonial.routing.yml...
+
+### STEP 5 : ###
