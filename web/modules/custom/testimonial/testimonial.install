@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the testimonial module.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_install().
+ */
+function testimonial_install() {
+  // Define the schema for the testimonial table.
+  $schema['testimonial'] = [
+    'description' => 'Stores testimonials submitted by users.',
+    'fields' => [
+      'id' => [
+        'description' => 'The primary key for the testimonial entry.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'description' => 'The user ID of the author of the testimonial.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'name' => [
+        'description' => 'The name of the author of the testimonial.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'nid' => [
+        'description' => 'The node ID associated with the testimonial.',
+        'type' => 'int',
+        'not null' => FALSE, // Can be updated. It has to be false to use it on a single content page by routing
+        // if its not linked as a block for example
+        'default' => 0,
+      ],
+      'testimonial' => [
+        'description' => 'The content of the testimonial.',
+        'type' => 'text',
+        'not null' => TRUE,
+      ],
+      'created' => [
+        'description' => 'The timestamp when the testimonial was submitted.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  // Create the testimonial table.
+  Database::getConnection()->schema()->createTable('testimonial', $schema['testimonial']);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function testimonial_uninstall() {
+  // Drop the testimonial table when the module is uninstalled.
+  Database::getConnection()->schema()->dropTable('testimonial');
+}

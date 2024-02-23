@@ -21,6 +21,9 @@ Identification des dependencies (si j'ai bien compris) :
   - drupal:entity // pour stocker mes testimonials sous forme d'entities
   - drupal:user // pour donner l'accès uniquement aux utilisateurs vérifiés
 
+  EDIT : j'arrive pas à installer le module, ya un truc que j'ai pas du comprendre j'enlève les dépendances
+          et je reviendrai dessus ...
+
   ### STEP 3 : Testimonial submission Form ###
 
   note :  J'utiliserai .routing.yml et non hook_menu()
@@ -42,4 +45,33 @@ On peut néanmoins retrouver le hook_menu() utilisé dans les v7 et inférieur.
 
 Création du fichier testimonial.routing.yml...
 
-### STEP 5 : ###
+### STEP 5 : Implémentation des logiques validateForm et submitForm ###
+
+Validation simple, juste si non empty.
+
+Pour le submit : try catch,
+on récupère :
+- uid, pour identifier le témoin de façon unique (c'est pas versatile, un user peut p-e changer de username etc...
+- displayname, pour afficher qui a posté le témoignage.
+- nid, l'id de la node, si imaginons on veut afficher des témoignages pour un article en particulier...
+- testimonial, le témoignage......
+- current_time, pour savoir de quand date un témoignage, pouvoir classer par avis récent par exemple.
+
+### STEP 6 : Création du block ###
+
+Block créé, mais il n'apparait pas dans le Block Layout, j'dois avoir un soucis qq part.
+
+### STEP 7 : Ajout d'un fichier testimonial.install ###
+
+Le but est de créer et supprimer ma table testimonial dans ma db.
+
+Rappel : cmd : sqlite3 .sqlite   <- se trouve sous sites/default/files.
+
+.table testimonial          voir si la table existe
+.schema testimonial         affiche le schema
+SELECT * FROM testimonial;   affiche le contenu
+
+note : Vu que j'arrive pas à mettre mon module en Block, nid est null donc j'ai pour le moment mis que
+        nid 'not null' => FALSE dans mon schema.
+
+

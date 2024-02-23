@@ -1,0 +1,4 @@
+access testimonial submit form block:
+  title: 'Access Testimonial Submit Form Block'
+  description: 'Allows users to access the testimonial submit form block.'
+  restrict access: true

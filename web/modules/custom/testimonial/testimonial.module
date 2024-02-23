@@ -6,3 +6,38 @@
  * This module allows users to submit and display testimonials on the site.
  */
 
+/**
+ * @file
+ * Provides custom functionality for managing testimonials on the site.
+ * This module allows users to submit and display testimonials on the site.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function testimonial_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.testimonial':
+      return '<p>' . t('Manage testimonials on your site.') . '</p>';
+
+    default:
+      return '';
+  }
+}
+
+/**
+ * Implements hook_module_info().
+ */
+function testimonial_module_info() {
+  $info = [];
+  $info['name'] = 'Testimonial';
+  $info['description'] = 'Allows users to submit and display testimonials.';
+  $info['package'] = 'Custom';
+  $info['configure'] = 'admin/config/testimonial/settings';
+  $info['project'] = 'testimonial';
+
+
+  return $info;
+}

@@ -65,13 +65,56 @@ class TestimonialSubmitForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Validation logic here
+    $testimonial = $form_state->getValue('testimonial');
+
+    if (empty($testimonial)) {
+      $form_state->setErrorByName('testimonial', $this->t('Le champ témoignage est obligatoire.'));
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Submission logic here
+    try {
+      // PHASE 1 : initiate values to save
+      $uid = \Drupal::currentUser()->id();
+      $name = \Drupal::currentUser()->getAccount()->getDisplayName();
+      $nid = $form_state->getValue('nid');
+      $testimonial = $form_state->getValue('testimonial');
+      $current_time = \Drupal::time()->getRequestTime();
+
+      $query = \Drupal::database()->insert('testimonial');
+
+      $query->fields([
+        'uid',
+        'name',
+        'nid',
+        'testimonial',
+        'created',
+      ]);
+
+      //set the values of the fields we selected. ORDER IS IMPORTANT
+      $query->values([
+        $uid,
+        $name,
+        $nid,
+        $testimonial,
+        $current_time,
+      ]);
+
+      //execute the query
+      $query->execute();
+
+      \Drupal::messenger()->addMessage(t("Votre témoignage a bien été enregistré !"));
+    } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $e) {
+      \Drupal::messenger()->addError(t
+      ("Votre témoignage n'a pas pu être enregistré en raison d'une erreur de base de données.
+       Veuillez réessayer ultérieurement."));
+    } catch (\Exception $e) {
+      \Drupal::messenger()->addError(t
+      ("Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement.
+       Message d'erreur : @message", ['@message' => $e->getMessage()]));
+    }
   }
 }

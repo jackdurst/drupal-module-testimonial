@@ -10,7 +10,7 @@ function rsvplist_schema() {
     'description' => 'Stores email, timestamp, nid and uid for a RSVP.',
     'fields' => [
       'id' => [
-        'description' => 'The primary identifier for the record.',
+        'description' => 'The primary identifier',
         'type' => 'serial',
         'size' => 'small',
         'unsigned' => TRUE,
