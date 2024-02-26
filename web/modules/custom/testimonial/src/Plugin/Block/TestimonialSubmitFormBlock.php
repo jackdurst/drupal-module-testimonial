@@ -5,7 +5,7 @@
  * Creates a block which displays the Testimonial Submit Form.
  */
 
-namespace Drupal\testimonial\Block;
+namespace Drupal\testimonial\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Annotation\Translation;
@@ -26,7 +26,12 @@ class TestimonialSubmitFormBlock extends BlockBase {
    * @inheritdoc
    */
   public function build() {
-    return \Drupal::formBuilder()->getForm('Drupal\testimonial\Form\TestimonialSubmitForm');
+
+return [
+  '#type' => 'markup',
+  '#markup' => t('My Testimonial submit form block'),
+];
+//    return \Drupal::formBuilder()->getForm('Drupal\testimonial\Form\TestimonialSubmitForm');
   }
 
   /**

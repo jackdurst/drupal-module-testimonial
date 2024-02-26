@@ -73,5 +73,7 @@ SELECT * FROM testimonial;   affiche le contenu
 
 note : Vu que j'arrive pas à mettre mon module en Block, nid est null donc j'ai pour le moment mis que
         nid 'not null' => FALSE dans mon schema.
+       edit : j'ai réussi à mettre le block en le placant dans testimonial/src/Plugin/Block plutot que
+       testimonial/src/Block ........
 
 

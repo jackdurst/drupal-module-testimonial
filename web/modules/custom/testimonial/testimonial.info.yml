@@ -3,4 +3,6 @@ type: module
 description: 'Allows users to submit and display testimonials.'
 core_version_requirement: ^10.2
 package: Custom
-version: 1.0
+
+dependencies:
+  - drupal:block
