@@ -27,18 +27,14 @@ class TestimonialSubmitFormBlock extends BlockBase {
    */
   public function build() {
 
-return [
-  '#type' => 'markup',
-  '#markup' => t('My Testimonial submit form block'),
-];
-//    return \Drupal::formBuilder()->getForm('Drupal\testimonial\Form\TestimonialSubmitForm');
+    return \Drupal::formBuilder()->getForm('Drupal\testimonial\Form\TestimonialSubmitForm');
   }
 
   /**
    * @inheritdoc
    */
-//  protected function blockAccess(AccountInterface $account) {
-//    // Check if the user has permission to access the testimonial form block.
-//    return AccessResult::allowedIfHasPermission($account, 'access testimonial submit form block');
-//  }
+  protected function blockAccess(AccountInterface $account) {
+    // Check if the user has permission to access the testimonial form block.
+    return AccessResult::allowedIfHasPermission($account, 'access testimonial submit form block');
+  }
 }
