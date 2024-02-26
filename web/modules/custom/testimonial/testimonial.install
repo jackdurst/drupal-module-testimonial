@@ -36,8 +36,7 @@ function testimonial_install() {
       'nid' => [
         'description' => 'The node ID associated with the testimonial.',
         'type' => 'int',
-        'not null' => FALSE, // Can be updated. It has to be false to use it on a single content page by routing
-        // if its not linked as a block for example
+        'not null' => TRUE,
         'default' => 0,
       ],
       'testimonial' => [

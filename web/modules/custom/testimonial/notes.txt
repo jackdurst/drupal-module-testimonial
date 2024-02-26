@@ -59,7 +59,7 @@ on récupère :
 
 ### STEP 6 : Création du block ###
 
-Block créé, mais il n'apparait pas dans le Block Layout, j'dois avoir un soucis qq part.
+Block créé, mais il n'apparait pas dans le Block Layout, j'dois avoir un soucis qq part. (soucis réglé au prochain step)
 
 ### STEP 7 : Ajout d'un fichier testimonial.install ###
 
@@ -74,6 +74,13 @@ SELECT * FROM testimonial;   affiche le contenu
 note : Vu que j'arrive pas à mettre mon module en Block, nid est null donc j'ai pour le moment mis que
         nid 'not null' => FALSE dans mon schema.
        edit : j'ai réussi à mettre le block en le placant dans testimonial/src/Plugin/Block plutot que
-       testimonial/src/Block ........
+       testimonial/src/Block
+
+       ENREGISTREMENT DU NID : done
+
+### STEP 8 :  ###
+
+
+
 
 

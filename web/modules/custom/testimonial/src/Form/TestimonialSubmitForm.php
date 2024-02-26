@@ -47,6 +47,14 @@ class TestimonialSubmitForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+
+    if( !(is_null($node))) {
+      $nid = $node->id();
+    } else {
+      $nid = 0;
+    }
+
     $form['testimonial'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Votre témoignage'),
@@ -56,6 +64,11 @@ class TestimonialSubmitForm extends FormBase {
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Soumettre'),
+    ];
+
+    $form['nid'] = [
+      '#type' => 'hidden',
+      '#value' => $nid,
     ];
 
     return $form;
@@ -77,7 +90,6 @@ class TestimonialSubmitForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     try {
-      // PHASE 1 : initiate values to save
       $uid = \Drupal::currentUser()->id();
       $name = \Drupal::currentUser()->getAccount()->getDisplayName();
       $nid = $form_state->getValue('nid');
@@ -94,7 +106,6 @@ class TestimonialSubmitForm extends FormBase {
         'created',
       ]);
 
-      //set the values of the fields we selected. ORDER IS IMPORTANT
       $query->values([
         $uid,
         $name,
@@ -103,7 +114,6 @@ class TestimonialSubmitForm extends FormBase {
         $current_time,
       ]);
 
-      //execute the query
       $query->execute();
 
       \Drupal::messenger()->addMessage(t("Votre témoignage a bien été enregistré !"));
