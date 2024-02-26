@@ -1,0 +1,9 @@
+<h1>TEST</h1>
+
+{% for testimonial in testimonials %}
+  <div>
+    <h3>{{ testimonial.name }}, {{ testimonial.date }}</h3>
+    <p>{{ testimonial.testimonial }}</p>
+  </div>
+
+{% endfor %}

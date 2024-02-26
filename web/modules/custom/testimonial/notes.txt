@@ -78,7 +78,18 @@ note : Vu que j'arrive pas à mettre mon module en Block, nid est null donc j'ai
 
        ENREGISTREMENT DU NID : done
 
-### STEP 8 :  ###
+### STEP 8 : Ajout d'un block d'affichage des témoignages. ###
+
+Je vais créer un nouveau block TestimonialDisplayBlock.php
+
+Le but serait d'afficher un certain nombre des derniers témoignages, et de pouvoir étendre ce nombre avec une flèche.
+Le nombre de témoignages affichés par défaut sera de 3 mais il sera modifiable lors de l'ajout du block plus tard.
+
+Ajout du module Devel, qui permet d'utiliser la commande kint() pour afficher quelque chose
+
+
+
+
 
 
 
