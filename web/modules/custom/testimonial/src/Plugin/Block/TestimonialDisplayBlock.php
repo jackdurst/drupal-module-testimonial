@@ -21,31 +21,38 @@ use Drupal\Core\Block\BlockBase;
  */
 class TestimonialDisplayBlock extends BlockBase {
   public function build() {
-    $testimonials = [];
+    $testimonials = $this->loadTestimonials(3);
 
-    $query = \Drupal::database()->select('testimonial', 't');
-    $query->fields('t', ['name', 'testimonial', 'created']);
-//    $query->range(0, 2); // Adjust the range to display 3 testimonials at a time.
-    $query->orderBy('created', 'DESC'); // From last to first
-    $results = $query->execute()->fetchAll();
-
-    // Load testimonial nodes.
-    foreach ($results as $result) {
-      $testimonials[] = [
-        'name' => $result->name,
-        'testimonial' => $result->testimonial,
-        'date' => date('(d/m/Y)', $result->created),
-      ];
-    }
-
-    kint($testimonials);
-
-    $build = [
-      '#theme' => 'testimonial_display_block',
+    return [
+      '#theme' => 'block_testimonial',
       '#testimonials' => $testimonials,
     ];
+  }
 
+  protected function loadTestimonials($limit = 3) {
+    // Initialize an empty array to store testimonial objects
+    $testimonials = [];
 
-    return $build;
+    // Load testimonials from the database
+    $query = \Drupal::database()->select('testimonial', 't');
+    $query->fields('t', ['name', 'testimonial', 'created']);
+    $query->orderBy('created', 'DESC'); // From most recent to oldest
+    $query->range(0, $limit); // Limit the number of results
+    $results = $query->execute()->fetchAll();
+
+    // Process each testimonial result
+    foreach ($results as $result) {
+      // Create a testimonial object and populate its properties
+      $testimonial = new \stdClass();
+      $testimonial->name = $result->name;
+      $testimonial->testimonial = $result->testimonial;
+      $testimonial->created = $result->created;
+
+      // Add the testimonial object to the array
+      $testimonials[] = $testimonial;
+    }
+
+    // Return the array of testimonial objects
+    return $testimonials;
   }
 }

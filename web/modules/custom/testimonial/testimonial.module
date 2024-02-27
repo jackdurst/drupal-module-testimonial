@@ -41,3 +41,16 @@ function testimonial_module_info() {
 
   return $info;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function testimonial_theme($existing, $type, $theme, $path) {
+  return [
+    'block_testimonial' => [
+      'variables' => [
+        'testimonials' => [],
+      ],
+    ],
+  ];
+}

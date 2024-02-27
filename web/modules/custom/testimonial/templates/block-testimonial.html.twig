@@ -1,0 +1,8 @@
+<div class="testimonial-wrapper">
+  {% for testimonial in testimonials %}
+    <div class="testimonial">
+      <p>{{ testimonial.testimonial }}</p>
+      <p>By {{ testimonial.name }} on {{ testimonial.created|date('d/m/Y') }}</p>
+    </div>
+  {% endfor %}
+</div>
