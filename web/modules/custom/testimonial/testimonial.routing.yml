@@ -1,7 +1,17 @@
-testimonial.submit_form:
+testimonials.submit_form:
   path: '/testimonial/submit'
   defaults:
     _form: '\Drupal\testimonial\Form\TestimonialSubmitForm'
     _title: 'Soumettre un témoignage'
   requirements:
     _permission: 'access content'
+
+testimonials.load_more:
+  path: '/testimonials/load-more-testimonials'
+  defaults:
+    _controller: '\Drupal\testimonial\Controller\TestimonialController::loadMoreTestimonials'
+    _title: 'Load more testimonials'
+  requirements:
+    _permission: 'access content'
+  options:
+    _format: 'json'

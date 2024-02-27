@@ -26,6 +26,15 @@ class TestimonialDisplayBlock extends BlockBase {
     return [
       '#theme' => 'block_testimonial',
       '#testimonials' => $testimonials,
+      '#cache' => [
+        'max-age' => 0,
+        'contexts' => ['url.path'],
+      ],
+      '#attached' => [
+        'library' => [
+          'testimonial/testimonial',
+        ],
+      ],
     ];
   }
 
@@ -33,26 +42,32 @@ class TestimonialDisplayBlock extends BlockBase {
     // Initialize an empty array to store testimonial objects
     $testimonials = [];
 
-    // Load testimonials from the database
-    $query = \Drupal::database()->select('testimonial', 't');
-    $query->fields('t', ['name', 'testimonial', 'created']);
-    $query->orderBy('created', 'DESC'); // From most recent to oldest
-    $query->range(0, $limit); // Limit the number of results
-    $results = $query->execute()->fetchAll();
+    $current_node = \Drupal::routeMatch()->getParameter('node');
+    $current_nid = $current_node ? $current_node->id() : NULL;
 
-    // Process each testimonial result
-    foreach ($results as $result) {
-      // Create a testimonial object and populate its properties
-      $testimonial = new \stdClass();
-      $testimonial->name = $result->name;
-      $testimonial->testimonial = $result->testimonial;
-      $testimonial->created = $result->created;
+    if ($current_nid) {
+      $query = \Drupal::database()->select('testimonial', 't');
+      $query->fields('t', ['name', 'testimonial', 'created']);
+      $query->orderBy('created', 'DESC'); // From most recent to oldest
+      $query->condition('nid', $current_nid);
+      $query->range(0, $limit); // Limit the number of results
+      $results = $query->execute()->fetchAll();
 
-      // Add the testimonial object to the array
-      $testimonials[] = $testimonial;
+      // Process each testimonial result
+      foreach ($results as $result) {
+        // Create a testimonial object and populate its properties
+        $testimonial = new \stdClass();
+        $testimonial->name = $result->name;
+        $testimonial->testimonial = $result->testimonial;
+        $testimonial->created = $result->created;
+
+        // Add the testimonial object to the array
+        $testimonials[] = $testimonial;
+      }
+
+      // Return the array of testimonial objects
+      return $testimonials;
     }
-
-    // Return the array of testimonial objects
-    return $testimonials;
+    return NULL;
   }
 }

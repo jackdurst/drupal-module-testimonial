@@ -1,0 +1,5 @@
+testimonial:
+  js:
+    js/load-more-testimonials.js: {}
+  dependencies:
+    - core/jquery

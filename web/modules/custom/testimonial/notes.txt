@@ -87,30 +87,21 @@ Le nombre de témoignages affichés par défaut sera de 3 mais il sera modifiabl
 
 Ajout du module Devel, qui permet d'utiliser la commande kint() pour afficher quelque chose
 
-J'ai mis 5 heures à trouver comment faire un block custom avec un template twig :
+### STEP 9 : Amélioration du block d'affichage. ###
 
-1. Créer le @Block, le build avec la même logique et return :
-         return [
-            '#theme' => 'block_testimonial', // pour un twig block-testimonial.html.twig
-            '#testimonials' => $testimonials,
-          ];
-2. Créer le fichier block-testimonial.html.twig dans monmodule/templates
+Déjà n'afficher que les témoignages qui correspondent au noeud :
 
-3. Implémenter le hook_theme() dans mon .module
+Ne pas garder en cache sinon, si je vais en premier sur le noeud 1, puis sur le noeud 2, j'aurai uniquement
+les témoignages du noeud 1 d'affiché etc... :
 
-function testimonial_theme($existing, $type, $theme, $path) {
-  return [
-    'block_testimonial' => [
-      'variables' => [
-        'testimonials' => [],
+return [
+      '#theme' => 'block_testimonial',
+      '#testimonials' => $testimonials,
+      '#cache' => [
+        'max-age' => 0,
+        'contexts' => ['url.path'],
       ],
-    ],
-  ];
-}
-
-
-
-
+    ];
 
 
 
