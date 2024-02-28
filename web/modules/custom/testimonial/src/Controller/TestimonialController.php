@@ -9,7 +9,7 @@ class TestimonialController extends ControllerBase {
 
   public function loadMoreTestimonials() {
     $offset = \Drupal::request()->query->get('offset', 0); // A partir duquel
-    $limit = \Drupal::request()->query->get('limit', 5); // Combien d'élément
+    $limit = \Drupal::request()->query->get('limit', 1); // Combien d'élément
 
     $testimonials = $this->loadTestimonials($offset, $limit);
 

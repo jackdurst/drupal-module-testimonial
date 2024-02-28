@@ -1,9 +1,8 @@
 (function ($) {
   var offset = 0;
-  var limit = 3;
+  var limit = 1;
 
   $(document).ready(function () {
-    // Lorsque l'utilisateur clique sur le bouton "Afficher plus"
     $('#load-more-testimonials').click(function () {
       offset += limit;
       $.ajax({
@@ -12,11 +11,23 @@
         data: { offset: offset, limit: limit },
         dataType: 'html',
         success: function (data) {
-          // Ajouter les témoignages supplémentaires à la fin de la liste existante
-          $('.testimonial-wrapper').append(data);
+          var responseData = JSON.parse(data);
+
+          responseData.testimonials.forEach(function(testimonial) {
+            var testimonialHtml = '<div class="testimonial">';
+            testimonialHtml += '<p>' + testimonial.testimonial + '</p>';
+
+            // Date format :
+            const date = new Date(testimonial.created * 1000)
+            const formattedDate = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+            testimonialHtml += '<p>By ' + testimonial.name + ' on ' + formattedDate + '</p>';
+            testimonialHtml += '</div>';
+
+            $('.testimonial-wrapper').append(testimonialHtml);
+          });
         },
         error: function (xhr, status, error) {
-          // Gérer les erreurs éventuelles
           console.error('Une erreur s\'est produite lors du chargement des témoignages :', error);
         }
       });

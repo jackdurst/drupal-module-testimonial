@@ -103,7 +103,8 @@ return [
       ],
     ];
 
-
+Ajout d'un bouton loadmore pour afficher plus de témoignages que ceux de bases.
+Après réfléxion sur la méthode je vais faire des requetes AJAX car je connais pas trop ce système et j'veux apprendre.
 
 
 
