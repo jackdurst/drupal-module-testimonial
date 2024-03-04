@@ -29,7 +29,6 @@
 
             $('.testimonial-wrapper').append(testimonialHtml);
           });
-          console.log(responseData.has_more_testimonials)
           if (responseData.has_more_testimonials) {
             $('#load-more-testimonials').show();
           } else {

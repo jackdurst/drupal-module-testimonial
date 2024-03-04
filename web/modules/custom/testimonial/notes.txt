@@ -106,7 +106,33 @@ return [
 Ajout d'un bouton loadmore pour afficher plus de témoignages que ceux de bases.
 Après réfléxion sur la méthode je vais faire des requetes AJAX car je connais pas trop ce système et j'veux apprendre.
 
+La méthode utilisée pour le bouton afficher plus :
 
+- vois si hasMoreTestimonials = true, et afficher le bouton directement depuis le block dans un premier temps.
+- On ajoute donc       '#has_more_testimonials' => $moreTesti, un booléen et on affiche le button if == true.
+- Ensuite lors de la requete ajax, j'aurai besoin du nid du coup je dois l'ajouter a drupalSettings :
+
+ '#attached' => [
+        'drupalSettings' => [
+          'mynid' => $current_nid,
+        ],
+
+- Attention à bien l'ajouter dans les variables de mon thème parmis le module :
+
+          'block_testimonial' => [
+              'variables' => [
+                'testimonials' => [],
+                'mynid' => NULL,
+
+- Finalement, récupérer le nid dans le script.js et l'envoyer en data dans la requete :
+   var currentNodeId = drupalSettings.mynid;
+- On refait un check hasMoreTestimonials qui return true ou false et on ajoute un if else avec .hide ou .show() dans le script :
+
+  if (responseData.has_more_testimonials) {
+            $('#load-more-testimonials').show();
+          } else {
+            $('#load-more-testimonials').hide();
+          }
 
 
 
