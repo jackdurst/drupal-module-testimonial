@@ -8,51 +8,78 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class TestimonialController extends ControllerBase {
 
   public function loadMoreTestimonials() {
-    $offset = \Drupal::request()->query->get('offset', 0); // A partir duquel
-    $limit = \Drupal::request()->query->get('limit', 1); // Combien d'élément
+    try {
+      $offset = \Drupal::request()->query->get('offset', 0);
+      $limit = \Drupal::request()->query->get('limit', 1);
+      $currentNodeId = \Drupal::request()->query->get('currentNodeId');
 
-    $testimonials = $this->loadTestimonials($offset, $limit);
+      if (!isset($currentNodeId)) {
+        throw new \Exception('CurrentNodeId is not set.');
+      }
 
-    $hasMoreTestimonials = $this->hasMoreTestimonials($offset + $limit);
+      $testimonials = $this->loadTestimonials($offset, $limit, $currentNodeId);
+      $hasMoreTestimonials = $this->hasMoreTestimonials($offset + $limit, $currentNodeId);
 
-    $response = new JsonResponse([
-      'testimonials' => $testimonials,
-      'has_more_testimonials' => $hasMoreTestimonials,
-    ]);
+      $response = new JsonResponse([
+        'testimonials' => $testimonials,
+        'has_more_testimonials' => $hasMoreTestimonials,
+      ]);
 
-    return $response;
+      return $response;
+    } catch (\Exception $e) {
+      // Log or handle the exception as needed
+      return new JsonResponse([
+        'testimonials' => $testimonials,
+        'has_more_testimonials' => $hasMoreTestimonials,
+      ]);
+    }
   }
 
-  protected function loadTestimonials($offset, $limit) {
+  protected function loadTestimonials($offset, $limit, $currentNodeId) {
     $testimonials = [];
 
-    $query = \Drupal::database()->select('testimonial', 't');
-    $query->fields('t', ['name', 'testimonial', 'created']);
-    $query->orderBy('created', 'DESC');
-    $query->range($offset, $limit);
-    $results = $query->execute()->fetchAll();
+    // Vérifier si $currentNodeId est défini
+    if (!isset($currentNodeId)) {
+      return $testimonials;
+    }
 
-    foreach ($results as $result) {
-      $testimonial = [
-        'name' => $result->name,
-        'testimonial' => $result->testimonial,
-        'created' => $result->created,
-      ];
-      $testimonials[] = $testimonial;
+    try {
+      $query = \Drupal::database()->select('testimonial', 't');
+      $query->fields('t', ['name', 'testimonial', 'created']);
+      $query->orderBy('created', 'DESC');
+      $query->condition('nid', $currentNodeId);
+      $query->range($offset, $limit);
+      $results = $query->execute()->fetchAll();
+
+      foreach ($results as $result) {
+        $testimonial = [
+          'name' => $result->name,
+          'testimonial' => $result->testimonial,
+          'created' => $result->created,
+        ];
+        $testimonials[] = $testimonial;
+      }
+    } catch (\Exception $e) {
+      return new JsonResponse(['error' => 'Erreur lors de la récupération en bdd du controller loadMoreTestimonials.'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     return $testimonials;
   }
 
-  protected function hasMoreTestimonials($nextOffset) {
-    $totalTestimonials = $this->getTotalTestimonialsCount();
+  protected function hasMoreTestimonials($nextOffset, $currentNodeId) {
+    $totalTestimonials = $this->getTotalTestimonialsCount($currentNodeId);
 
-    return $totalTestimonials > $nextOffset;
+    if ($totalTestimonials > $nextOffset) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  protected function getTotalTestimonialsCount() {
+  protected function getTotalTestimonialsCount($currentNodeId) {
     $query = \Drupal::database()->select('testimonial', 't');
     $query->addExpression('COUNT(*)');
+    $query->condition('t.nid', $currentNodeId);
     return $query->execute()->fetchField();
   }
   }

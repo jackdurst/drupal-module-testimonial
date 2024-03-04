@@ -21,16 +21,24 @@ use Drupal\Core\Block\BlockBase;
  */
 class TestimonialDisplayBlock extends BlockBase {
   public function build() {
-    $testimonials = $this->loadTestimonials(3);
+    $current_node = \Drupal::routeMatch()->getParameter('node');
+    $current_nid = $current_node ? $current_node->id() : NULL;
+
+    $testimonials = $this->loadTestimonials(3, $current_nid);
+    $moreTesti = $this->hasMoreTestimonials(3, $current_nid);
 
     return [
       '#theme' => 'block_testimonial',
       '#testimonials' => $testimonials,
+      '#has_more_testimonials' => $moreTesti,
       '#cache' => [
         'max-age' => 0,
         'contexts' => ['url.path'],
       ],
       '#attached' => [
+        'drupalSettings' => [
+          'mynid' => $current_nid,
+        ],
         'library' => [
           'testimonial/testimonial',
         ],
@@ -38,12 +46,9 @@ class TestimonialDisplayBlock extends BlockBase {
     ];
   }
 
-  protected function loadTestimonials($limit = 3) {
+  protected function loadTestimonials($limit, $current_nid) {
     // Initialize an empty array to store testimonial objects
     $testimonials = [];
-
-    $current_node = \Drupal::routeMatch()->getParameter('node');
-    $current_nid = $current_node ? $current_node->id() : NULL;
 
     if ($current_nid) {
       $query = \Drupal::database()->select('testimonial', 't');
@@ -69,5 +74,22 @@ class TestimonialDisplayBlock extends BlockBase {
       return $testimonials;
     }
     return NULL;
+  }
+
+  protected function hasMoreTestimonials($nextOffset, $currentNodeId) {
+    $totalTestimonials = $this->getTotalTestimonialsCount($currentNodeId);
+
+    if ($totalTestimonials > $nextOffset) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected function getTotalTestimonialsCount($currentNodeId) {
+    $query = \Drupal::database()->select('testimonial', 't');
+    $query->addExpression('COUNT(*)');
+    $query->condition('t.nid', $currentNodeId);
+    return $query->execute()->fetchField();
   }
 }

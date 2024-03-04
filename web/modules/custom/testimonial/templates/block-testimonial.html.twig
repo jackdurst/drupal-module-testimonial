@@ -1,3 +1,10 @@
+<div>
+  {% if mynid %}
+    <p>Le NID est : {{ mynid }}</p>
+  {% else %}
+    <p>Le NID n'est pas défini.</p>
+  {% endif %}
+</div>
 <div class="testimonial-wrapper">
   {% for testimonial in testimonials %}
     <div class="testimonial">
@@ -8,6 +15,16 @@
 </div>
 
 {# Bouton "Afficher plus" #}
-{% if has_more_testimonials %}
+{% if has_more_testimonials == true %}
   <button id="load-more-testimonials">Afficher plus</button>
 {% endif %}
+
+<script>
+  (function ($) {
+    // Accéder au nid depuis les paramètres Drupal.
+    var currentNodeId = {{ nid }};
+    console.log(currentNodeId)
+
+    // Utiliser currentNodeId dans votre script JavaScript.
+  })(jQuery);
+</script>

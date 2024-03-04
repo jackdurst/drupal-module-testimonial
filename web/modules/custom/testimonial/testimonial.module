@@ -50,6 +50,8 @@ function testimonial_theme($existing, $type, $theme, $path) {
     'block_testimonial' => [
       'variables' => [
         'testimonials' => [],
+        'has_more_testimonials' => NULL,
+        'mynid' => NULL,
       ],
     ],
   ];
